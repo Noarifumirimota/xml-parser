@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+import webbrowser
 import xml.etree.ElementTree as ET
 
 # Files.
@@ -32,21 +33,30 @@ def open_file_dialog():
         xml_load_error(root)
     except ET.ParseError:
         xml_load_error(root)
-
+#################################################################################################### Parse file (xml).
+def parse_file_to_json():
+    print('XYZ')
+#################################################################################################### Open GitHub url.
+def open_gh_url():
+    webbrowser.open('https://github.com/Noarifumirimota/xml-parser')
 
 #################################################################################################### Create menu.
 menuBar = Menu(root)
 
-# Adding file menu.
+# Opener list.
 fileMenu = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="Open xml file", command=open_file_dialog)
 fileMenu.add_separator()
 fileMenu.add_command(label="Exit", command=root.quit)
+# Parser list.
+parserList = Menu(menuBar, tearoff=0)
+menuBar.add_cascade(label="JSON", menu=parserList)
+parserList.add_command(label="Tags as keys", command=parse_file_to_json)
 # Adding help menu.
 helpMenu = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="Help", menu=helpMenu)
-helpMenu.add_command(label="GitHub")
+helpMenu.add_command(label="GitHub (open in browser)", command=open_gh_url)
 
 #################################################################################################### Root.
 root.config(menu=menuBar)
