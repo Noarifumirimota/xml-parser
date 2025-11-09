@@ -1,16 +1,5 @@
-import tkinter as tk
 from tkinter import ttk
-
-
-# Error loader draw.
-def xml_load_error(root):
-    tk.Label(
-        root,
-        text="File not found or invalid XML file.",
-        background="#ff6666",
-        font=("Helvetica", 8, "bold"),
-    ).pack()
-
+from utilities import xml_load_error
 
 # Get all tags without namespaces.
 # def xml_get_tags(xml_root):
@@ -43,28 +32,33 @@ def xml_insert_element(xml_tree_view, xml_parent_element, xml_element):
 
 
 def xml_root_load(xml_root, root):
-    # xml_get_tags(xml_root)
+    try:
+        # xml_get_tags(xml_root)
 
-    # Get all tags and text.
-    # for xml_element in xml_root.iter():
-    #     print(xml_element.tag.split('}', 1)[-1])
-    #     # print(xml_element.attrib)
-    #     print(xml_element.text)
+        # Get all tags and text.
+        # for xml_element in xml_root.iter():
+        #     print(xml_element.tag.split('}', 1)[-1])
+        #     # print(xml_element.attrib)
+        #     print(xml_element.text)
 
-    # Generate tree gui view by ttk.
-    xml_tree_view = ttk.Treeview(root, columns=("text",), show="tree headings")
-    xml_tree_view.heading("#0", text="Tag")
-    xml_tree_view.heading("text", text="Text value")
-    xml_tree_view.pack(fill="both", expand=True, padx=5, pady=5)
+        # Generate tree gui view by ttk.
+        xml_tree_view = ttk.Treeview(root, columns=("text",), show="tree headings")
+        xml_tree_view.heading("#0", text="Tag")
+        xml_tree_view.heading("text", text="Text value")
+        xml_tree_view.pack(fill="both", expand=True, padx=5, pady=5)
 
-    # Add the main tree root.
-    tree_root_id = xml_tree_view.insert(
-        "",
-        "end",
-        text=xml_root.tag.split("}", 1)[-1],
-        values=[(xml_root.text or "").strip()],
-    )
+        # Add the main tree root.
+        tree_root_id = xml_tree_view.insert(
+            "",
+            "end",
+            text=xml_root.tag.split("}", 1)[-1],
+            values=[(xml_root.text or "").strip()],
+        )
 
-    # Fill tree with childs.
-    for xml_element in xml_root:
-        xml_insert_element(xml_tree_view, tree_root_id, xml_element)
+        # Fill tree with childs.
+        for xml_element in xml_root:
+            xml_insert_element(xml_tree_view, tree_root_id, xml_element)
+    except Exception:
+        xml_load_error(root)
+
+    return xml_root
