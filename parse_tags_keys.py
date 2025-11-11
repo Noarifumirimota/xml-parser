@@ -37,6 +37,7 @@ def xml_dict(xml_root):
 
 
 def parse_file_to_json(root, xml_root):
+    xml_root.tag = xml_root.tag.split("}", 1)[-1]
     # XML convertion into dict.
     dict_data = {xml_root.tag: xml_dict(remove_namespaces(xml_root))}
 
