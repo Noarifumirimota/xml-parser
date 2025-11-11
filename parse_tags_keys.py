@@ -36,17 +36,13 @@ def xml_dict(xml_root):
     return js
 
 
-def parse_file_to_json(root, xml_root):
+def parse_file_to_json(xml_root, text_box):
     xml_root.tag = xml_root.tag.split("}", 1)[-1]
     # XML convertion into dict.
     dict_data = {xml_root.tag: xml_dict(remove_namespaces(xml_root))}
 
     # Dict into JSON string.
     json_str = json.dumps(dict_data, indent=4, ensure_ascii=False)
-
-    # Create text field.
-    text_box = scrolledtext.ScrolledText(root, wrap=tk.WORD)
-    text_box.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
     # Fill text field.
     text_box.insert(tk.END, json_str)

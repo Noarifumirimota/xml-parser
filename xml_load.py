@@ -31,22 +31,8 @@ def xml_insert_element(xml_tree_view, xml_parent_element, xml_element):
         xml_insert_element(xml_tree_view, node_id, xml_element_child)
 
 
-def xml_root_load(xml_root, root):
+def xml_root_load(xml_root, root, xml_tree_view):
     try:
-        # xml_get_tags(xml_root)
-
-        # Get all tags and text.
-        # for xml_element in xml_root.iter():
-        #     print(xml_element.tag.split('}', 1)[-1])
-        #     # print(xml_element.attrib)
-        #     print(xml_element.text)
-
-        # Generate tree gui view by ttk.
-        xml_tree_view = ttk.Treeview(root, columns=("text",), show="tree headings")
-        xml_tree_view.heading("#0", text="Tag")
-        xml_tree_view.heading("text", text="Text value")
-        xml_tree_view.pack(fill="both", expand=True, padx=5, pady=5)
-
         # Add the main tree root.
         tree_root_id = xml_tree_view.insert(
             "",

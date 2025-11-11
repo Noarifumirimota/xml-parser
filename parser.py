@@ -1,7 +1,10 @@
 from tkinter import *
 from tkinter import filedialog
+import tkinter as tk
+from tkinter import scrolledtext
 import webbrowser
 import xml.etree.ElementTree as ET
+from tkinter import ttk
 
 # Files.
 from xml_load import xml_root_load
@@ -14,6 +17,8 @@ app_title = "XML file parser "
 root.title(app_title)
 
 xml_loaded_root_file = None
+xml_tree_view = ttk.Treeview(root, columns=("text",), show="tree headings")
+text_box = scrolledtext.ScrolledText(root, wrap=tk.WORD)
 
 
 #################################################################################################### Import file (xml).
@@ -30,12 +35,17 @@ def open_file_dialog():
     root.title(app_title + "(" + root.filename + ")")
 
     try:
+        # Clear elements.
+        xml_tree_view.delete(*xml_tree_view.get_children())
+        text_box.config(state=tk.NORMAL)
+        text_box.delete("1.0", tk.END)
         # Import file.
         xml_tree = ET.parse(root.filename)
         xml_root = xml_tree.getroot()
         # Load to gui.
-        xml_root_load(xml_root, root)
+        xml_root_load(xml_root, root, xml_tree_view)
 
+        # JSON parse.
         with open(root.filename, "r", encoding="utf-8") as f:
             xml_data = f.read()
         xml_loaded_root_file = ET.fromstring(xml_data)
@@ -45,12 +55,12 @@ def open_file_dialog():
         xml_load_error(root)
 
 
-#################################################################################################### Parse file (xml).
+#################################################################################################### Parse file xml.
 def open_parse_file_to_json():
     global xml_loaded_root_file
 
     if xml_loaded_root_file is not None:
-        parse_file_to_json(root, xml_loaded_root_file)
+        parse_file_to_json(xml_loaded_root_file, text_box)
     else:
         xml_load_error(root)
 
@@ -78,8 +88,21 @@ helpMenu = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="Help", menu=helpMenu)
 helpMenu.add_command(label="GitHub (open in browser)", command=open_gh_url)
 
-#################################################################################################### Root.
 root.config(menu=menuBar)
-window_center(root)
 
+#################################################################################################### Elements.
+root.rowconfigure(0, weight=1)
+root.rowconfigure(1, weight=1)
+root.columnconfigure(0, weight=1)
+
+# Tree gui view by ttk.
+xml_tree_view.heading("#0", text="Tag")
+xml_tree_view.heading("text", text="Text value")
+xml_tree_view.grid(column=0, row=0, padx=2, pady=2, sticky="nsew")
+
+# Text field.
+text_box.grid(column=0, row=1, padx=2, pady=2, sticky="nsew")
+
+#################################################################################################### Root.
+window_center(root)
 root.mainloop()
