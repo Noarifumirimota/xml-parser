@@ -8,7 +8,7 @@ from tkinter import ttk
 
 # Files.
 from xml_load import xml_root_load
-from utilities import xml_load_error, window_center
+from utilities import xml_load_error, xml_save_error, window_center
 from parse_tags_keys import parse_file_to_json
 
 # Root.
@@ -17,6 +17,8 @@ app_title = "XML file parser "
 root.title(app_title)
 
 xml_loaded_root_file = None
+xml_json_to_save = None
+
 xml_tree_view = ttk.Treeview(root, columns=("text",), show="tree headings")
 text_box = scrolledtext.ScrolledText(root, wrap=tk.WORD)
 
@@ -58,11 +60,33 @@ def open_file_dialog():
 #################################################################################################### Parse file xml.
 def open_parse_file_to_json():
     global xml_loaded_root_file
+    global xml_json_to_save
+
+    xml_json_to_save = None
 
     if xml_loaded_root_file is not None:
-        parse_file_to_json(xml_loaded_root_file, text_box)
+        xml_json_to_save = parse_file_to_json(xml_loaded_root_file, text_box)
     else:
         xml_load_error(root)
+
+
+#######################################################################################3############ Save file
+def save_as_json():
+    global xml_json_to_save
+
+    if xml_json_to_save is not None:
+        file_to_save = filedialog.asksaveasfilename(
+            defaultextension=".json", filetypes=[("xml files (*.xml)", "*.xml")]
+        )
+
+        if file_to_save:
+            try:
+                with open(file_to_save, "w", encoding="utf-8") as f:
+                    f.write(xml_json_to_save)
+            except Exception as e:
+                xml_save_error(root)
+    else:
+        xml_save_error(root)
 
 
 #################################################################################################### Open GitHub url.
@@ -83,6 +107,10 @@ fileMenu.add_command(label="Exit", command=root.quit)
 parserList = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="JSON", menu=parserList)
 parserList.add_command(label="Simple (Tags as keys)", command=open_parse_file_to_json)
+# File save.
+fileSave = Menu(menuBar, tearoff=0)
+menuBar.add_cascade(label="Save", menu=fileSave)
+fileSave.add_command(label="As JSON file", command=save_as_json)
 # Adding help menu.
 helpMenu = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="Help", menu=helpMenu)

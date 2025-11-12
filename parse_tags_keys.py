@@ -1,6 +1,5 @@
 import json
 import tkinter as tk
-from tkinter import scrolledtext
 
 
 def remove_namespaces(xml_root):
@@ -47,3 +46,5 @@ def parse_file_to_json(xml_root, text_box):
     # Fill text field.
     text_box.insert(tk.END, json_str)
     text_box.config(state=tk.DISABLED)
+
+    return json_str

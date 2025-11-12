@@ -25,3 +25,12 @@ def xml_load_error(root):
         background="#ff6666",
         font=("Helvetica", 8, "bold"),
     ).pack()
+
+
+def xml_save_error(root):
+    tk.Label(
+        root,
+        text="Saving error.",
+        background="#ff6666",
+        font=("Helvetica", 8, "bold"),
+    ).pack()
