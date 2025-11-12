@@ -8,7 +8,7 @@ from tkinter import ttk
 
 # Files.
 from xml_load import xml_root_load
-from utilities import xml_load_error, window_center
+from utilities import xml_load_error, xml_save_error, window_center
 from parse_tags_keys import parse_file_to_json
 
 # Root.
@@ -30,7 +30,7 @@ def open_file_dialog():
     root.filename = filedialog.askopenfilename(
         initialdir="/",
         title="Select xml file",
-        filetypes=[("xml files (*.xml)", "*.xml")]
+        filetypes=[("xml files (*.xml)", "*.xml")],
     )
 
     # Window name change.
@@ -69,14 +69,14 @@ def open_parse_file_to_json():
     else:
         xml_load_error(root)
 
+
 #######################################################################################3############ Save file
 def save_as_json():
     global xml_json_to_save
 
     if xml_json_to_save is not None:
         file_to_save = filedialog.asksaveasfilename(
-            defaultextension=".json",
-            filetypes=[("xml files (*.xml)", "*.xml")]
+            defaultextension=".json", filetypes=[("xml files (*.xml)", "*.xml")]
         )
 
         if file_to_save:
@@ -84,9 +84,11 @@ def save_as_json():
                 with open(file_to_save, "w", encoding="utf-8") as f:
                     f.write(xml_json_to_save)
             except Exception as e:
-                print('xyz1')
+                xml_save_error(root)
     else:
-        print('xyz2')
+        xml_save_error(root)
+
+
 #################################################################################################### Open GitHub url.
 def open_gh_url():
     webbrowser.open("https://github.com/Noarifumirimota/xml-parser")
