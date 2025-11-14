@@ -8,7 +8,7 @@ from tkinter import ttk
 
 # Files.
 from xml_load import xml_root_load
-from utilities import xml_load_error, xml_save_error, window_center
+from utilities import xml_load_error, xml_save_error, window_center, new_window_center
 from parse_tags_keys import parse_file_to_json
 
 # Root.
@@ -70,6 +70,12 @@ def open_parse_file_to_json():
         xml_load_error(root)
 
 
+def open_custom_parse_file_to_json():
+    new_window = Toplevel()
+    new_window_center(new_window)
+    new_window.title("Keynames settings")
+
+
 #######################################################################################3############ Save file
 def save_as_json():
     global xml_json_to_save
@@ -107,6 +113,7 @@ fileMenu.add_command(label="Exit", command=root.quit)
 parserList = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="JSON", menu=parserList)
 parserList.add_command(label="Simple (Tags as keys)", command=open_parse_file_to_json)
+parserList.add_command(label="Custom key names", command=open_custom_parse_file_to_json)
 # File save.
 fileSave = Menu(menuBar, tearoff=0)
 menuBar.add_cascade(label="Save", menu=fileSave)
